@@ -12,7 +12,7 @@ import md5 from 'md5' ;
 
 import { UploadDocFile, UploadPhotoImage } from "../../firebase/upload";
 
-import { setCookie } from "../../utils/Helper";
+import { checkCookie, getCookie, setCookie } from "../../utils/Helper";
 
 export const SignUpUser = (
     photo,
@@ -55,6 +55,24 @@ export const SignUpUser = (
     }
 }
 
+export const UserProfile = () => async dispatch => {
+    try {
+        if(!checkCookie('user_id')) return false ;
+
+        let userDoc = await getDoc(doc(db, "Users", getCookie('user_id'))) ;
+
+        await dispatch({
+            type : ActionTypes.UserProfile,
+            payload : {...userDoc.data()}
+        });
+
+        return true ;
+    } catch(err) {
+        console.log(err) ;
+        return false ;
+    }
+}
+
 export const SignInUser = (email, password) => async dispatch => {
     try {
         
@@ -64,17 +82,11 @@ export const SignInUser = (email, password) => async dispatch => {
            
             setCookie('user_id', userCredential.user.uid ) ;
 
-            let docSnap = await getDoc(doc(db, "Users", userCredential.user.uid)) ;
-
-            await updateDoc(doc(db, "Users", userCredential.user.uid), {
-                password : md5(password)
-            }) ;
+            let userDoc = await getDoc(doc(db, "Users", userCredential.user.uid)) ;
 
             await dispatch({
                 type : ActionTypes.SignInUser,
-                payload : {
-                    
-                }
+                payload : {...userDoc.data()}
             });
 
             return 200 ;

@@ -49,6 +49,7 @@ const SignUp = (props) => {
     } = props ;
 
     const theme = useTheme() ;
+    const navigate = useNavigate() ;
 
     const [phoneNumber, setPhoneNumber] = React.useState(null) ;
     const [photoImg, setPhotoImg] = React.useState({
@@ -84,7 +85,9 @@ const SignUp = (props) => {
     };
 
     const handleSignUp = async () => {
-        if(SignUpUser(photoImg, position, cav, name, phoneNumber, houseHold, informEmail, password, docFile)){
+        if(SignUpUser(photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail, password, docFile.raw)){
+            navigate('/auth') ;
+
             return swal({
                 title : 'Success',
                 text : 'Sign Up Successfully\r\nPlease, check your email box and verify your email.',

@@ -9,6 +9,7 @@ import theme from './utils/Theme' ;
 
 // Language 
 import { LanguageProvider } from "./utils/Language";
+import AuthProvider from './contexts/auth';
 
 // Store
 import { Provider } from 'react-redux' ;
@@ -23,18 +24,20 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <LanguageProvider>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Suspense fallback={<Fragment />} >
-              <Routes>
-                  <Route path="*" element={<MainComponent />} />
-              </Routes>
-            </Suspense>
-          </ThemeProvider>
-        </Provider>
-      </LanguageProvider>
+        <LanguageProvider>
+          <Provider store={store}>
+            <AuthProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Suspense fallback={<Fragment />} >
+                  <Routes>
+                      <Route path="*" element={<MainComponent />} />
+                  </Routes>
+                </Suspense>
+              </ThemeProvider>
+            </AuthProvider>
+          </Provider>
+        </LanguageProvider>
     </BrowserRouter>
   );
 }

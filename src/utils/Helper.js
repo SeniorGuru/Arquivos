@@ -25,6 +25,11 @@ export const getCookie = (cname) => {
     return null;
 }
 
+export const checkCookie = (cname) => {
+    if(getCookie(cname)) return true ;
+    return false ;
+}
+
 export const eraseCookie = async (cname) => {
     document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 

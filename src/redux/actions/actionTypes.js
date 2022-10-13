@@ -1,6 +1,8 @@
 const ActionTypes = {
     SignUpUser : "SignUpUser",
-    SignInUser : 'SignInUser'
+    SignInUser : 'SignInUser',
+
+    UserProfile : 'UserProfile'
 }
 
 export default ActionTypes ;

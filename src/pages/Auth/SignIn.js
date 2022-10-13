@@ -1,5 +1,7 @@
 import * as React from 'react' ;
 
+import { useNavigate } from 'react-router-dom';
+
 import { connect } from 'react-redux' ;
 import PropTypes from 'prop-types' ;
 import { SignInUser } from '../../redux/actions/auth';
@@ -31,6 +33,8 @@ const SignIn = (props) => {
         handleChangeStep
     } = props ;
 
+    const navigate = useNavigate() ;
+
     const [email, setEmail] = React.useState(null) ;
     const [password, setPassword] = React.useState(null) ;
     const [visiblePwd, setVisiblePwd] = React.useState(false) ;
@@ -48,7 +52,7 @@ const SignIn = (props) => {
                     icon : 'success'
                 })
             ) {
-                // navigate('/solstice/setting-screen') ;
+                navigate('/arquivos/');
             }
         } 
 

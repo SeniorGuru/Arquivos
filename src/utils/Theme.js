@@ -1,4 +1,5 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+
 import * as locale from '@mui/material/locale';
 
 import { DefaultLocale } from '../static/constants';
@@ -28,7 +29,7 @@ const WarningColor = {
     WR100 : '#f3b2b2'
 }
 
-const primary = "#283646";
+const primary = "#367fa9";
 const secondary = "#C72127";
 const background = '#F5F5F5';
 
@@ -87,8 +88,6 @@ const theme = createTheme({
 
     },
     typography: {
-        fontFamily: "Montserrat",
-
         useNextVariants: true
     }
 }, locale[DefaultLocale]);
