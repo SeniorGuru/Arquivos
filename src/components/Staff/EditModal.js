@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types' ;
-import { SignUpUser } from '../../redux/actions/auth';
+import { GetAdministrators, UpdateAdministrator } from '../../redux/actions/user';
 
 import { errorEmailHelper, errorPasswordHelper } from '../../utils/ErrorHandler' ;
 
@@ -28,11 +28,6 @@ import {
 } from '@mui/material';
 
 import {
-    RootDiv, 
-    TitleDiv
-} from './Styles/Common.styles' ;
-
-import {
     Button,
     TextField,
     UploadForm,
@@ -47,10 +42,14 @@ import {
 const EditModal = (props) => {
 
     const {
+        UpdateAdministrator,
+        GetAdministrators,
+
         open,
         handleClose,
 
-        data
+        data,
+        updated_id
     } = props ;
 
     const theme = useTheme() ;
@@ -90,12 +89,13 @@ const EditModal = (props) => {
     };
 
     const handleUpdate = async () => {
-        if(SignUpUser(photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail, password, docFile.raw)){
-            navigate('/auth') ;
+        if(await UpdateAdministrator(updated_id, photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail)){
+            handleClose() ;
+            GetAdministrators() ;
 
             return swal({
                 title : 'Success',
-                text : 'Sign Up Successfully\r\nPlease, check your email box and verify your email.',
+                text : 'Update Successfully',
                 icon : 'success',
                 buttons : false,
                 timer : 5000
@@ -104,7 +104,7 @@ const EditModal = (props) => {
 
         swal({
             title : 'Failed',
-            text : 'Sign Up Failed',
+            text : 'Update Failed',
             icon : 'error',
             buttons : false,
             timer : 5000
@@ -262,11 +262,14 @@ const EditModal = (props) => {
     )
 }
 EditModal.propTypes = {
+    UpdateAdministrator: PropTypes.func.isRequired,
+    GetAdministrators : PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
 
 })
 const mapDispatchToProps = {
-    
+    UpdateAdministrator,
+    GetAdministrators
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal) ;
