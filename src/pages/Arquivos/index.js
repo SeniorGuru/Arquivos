@@ -7,6 +7,7 @@ import Dashboard from './Dashboard';
 import ViewCollaborator from '../../components/Staff/ViewCollaborator';
 import EditCollaborator from '../../components/Staff/EditCollaborator';
 import NewCollaborator from '../../components/Staff/NewCollaborator';
+import Pending from './Pending';
 
 import Navbar from '../../components/Layouts/Navbar';
 import Menubar from '../../components/Layouts/Menubar';
@@ -30,6 +31,7 @@ const Aruqivos = () => {
                         <Route path='/staff/view-collaborator' element={<ViewCollaborator />}/>
                         <Route path='/staff/edit-collaborator' element={<EditCollaborator />}/>
                         <Route path='/staff/*' element={<Staff />} />
+                        <Route path='/pending' element={<Pending />} />
                     </Routes>
                 </ContentBody>
             </ContentMain>

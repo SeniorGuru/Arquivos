@@ -9,6 +9,7 @@ import ViewCompactIcon from '@mui/icons-material/ViewCompact';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 import { 
     LogoDiv,
@@ -64,6 +65,11 @@ const Navbar = () => {
                     icon : <AppRegistrationIcon />
                 }
             ]
+        },
+        {
+            to : '/arquivos/pending',
+            label : 'Pending',
+            icon : <PublishedWithChangesIcon/>
         }
     ]
 

@@ -53,10 +53,6 @@ const EditCollaborator = (props) => {
         GetAdministrators() ;
     }, []) ;
 
-    React.useEffect(() => {
-        console.log(filterList) ;
-    }, [filterList]) ;
-    
     return (
         <>
             <TableContainer>

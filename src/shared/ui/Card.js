@@ -83,5 +83,12 @@ const IconDiv = styled.div`
     & svg {
         color : rgba(0, 0, 0, 0.15) ;
         font-size : 60px;
+        transition : 0.2s;
+
+        cursor : pointer;
+
+        &:hover {
+            transform : scale(1.4, 1.4);
+        }
     }
 `

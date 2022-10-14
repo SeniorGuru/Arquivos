@@ -16,8 +16,6 @@ export const UploadPhotoImage = async (raw, user_id) => {
 
         let result = await listAll(storageRef)
 
-        console.log(result.items) ;
-
         result.items.forEach( (file) => {
             deleteObject(file) ;
         });

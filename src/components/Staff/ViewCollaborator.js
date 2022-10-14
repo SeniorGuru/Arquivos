@@ -51,10 +51,6 @@ const ViewCollaborator = (props) => {
         GetEmployees() ;
     }, []) ;
 
-    React.useEffect(() => {
-        console.log(filterList) ;
-    }, [filterList]) ;
-    
     return (
         <>
             <TableContainer>
