@@ -114,3 +114,44 @@ export const SignInUser = (email, password) => async dispatch => {
         return 401 ;
     }
 }
+
+export const AddCollaborator = (
+    photo,
+    position,
+    cav,
+    name,
+    phone_number,
+    house_hold,
+    inform_email,
+    password,
+    doc_file
+) => async dispatch => {
+    try {
+        let userDocs = await getDocs(query(collection(db, "Users"), where('email', '==', inform_email)));
+
+        if(!userDocs.size) {
+            let userCredential = await createUserWithEmailAndPassword(auth, inform_email, password) ;
+
+            await sendEmailVerification(auth.currentUser) ;
+
+            await setDoc(doc(db, "Users", userCredential.user.uid), {
+                position,
+                cav,
+                name,
+                phone_number,
+                house_hold,
+                inform_email,
+                password : md5(password),
+                creator_admin : getCookie('user_id')
+            });
+
+            await UploadDocFile(doc_file, userCredential.user.uid) ;
+            await UploadPhotoImage(photo, userCredential.user.uid) ;
+
+            return userCredential.user.uid ;
+        }
+    } catch(err) {
+        console.log(err) ;
+        return false ;
+    }
+}

@@ -30,7 +30,10 @@ const WarningColor = {
 }
 
 const primary = "#367fa9";
-const secondary = "#C72127";
+const secondary = "#f39c12";
+const success = '#00a65a';
+const danger = '#ff851b' ;
+const info = '#0073b7';
 const background = '#F5F5F5';
 
 // border
@@ -63,8 +66,11 @@ const theme = createTheme({
         purple : {
             ...PurpleColor
         },
-        primary: { main: primary, footer: '#055da6' },
-        secondary: { main: secondary },
+        primary: { main: primary, footer: '#055da6', light : '#00c0ef' },
+        secondary: { main: secondary},
+        danger : { main : danger },
+        info : { main : info},
+        success : { main : success },
         common: {
         },
         warning: {

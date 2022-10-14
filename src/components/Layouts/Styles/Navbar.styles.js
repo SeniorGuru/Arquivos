@@ -5,7 +5,21 @@ export const NavbarMain = styled.div`
     min-width : 250px;
 
     border-right : 2px solid gray;
+
+    & a {
+        text-decoration : none;
+        color : black;
+        
+        &:hover {
+            color : black;
+        }
+
+        &:active {
+            color : black;
+        }
+    }
 `
+
 export const LogoDiv = styled.div`
     color : white;
     background : ${props => props.theme.palette.primary.main};
@@ -53,9 +67,21 @@ export const PositionDiv = styled.div`
 `
 
 export const NavItem = styled.div`
+    width : 100%;
+    
     display : flex;
     gap : 10px;
     width : 100%;
 
     cursor : pointer;
+`
+
+export const SubNavItem = styled.div`
+    display : flex;
+    gap : 10px;
+    width : 100%;
+
+    cursor : pointer;
+
+    padding : 10px;
 `
