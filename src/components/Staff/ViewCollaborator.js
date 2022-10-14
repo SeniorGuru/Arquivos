@@ -7,10 +7,11 @@ import { GetEmployees } from '../../redux/actions/user';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 import { positions } from '../../static/constants';
+import { getCookie } from '../../utils/Helper';
 
 import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, CircularProgress } from '@mui/material';
 
-import DetailViewModal from './DetailViewModal';
+import DetailViewModal from '../Modal/DetailViewModal';
 
 const ViewCollaborator = (props) => {
     const {
@@ -43,7 +44,7 @@ const ViewCollaborator = (props) => {
 
     React.useEffect(() => {
         if(employeesList) {
-            setFilterList(employeesList) ;
+            setFilterList(employeesList.filter(row => row.id !== getCookie('user_id'))) ;
         }
     }, [employeesList]) ;
 

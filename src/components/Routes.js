@@ -6,12 +6,16 @@ import Landing from "../pages/Landing";
 import Auth from '../pages/Auth' ;
 import Arquivos from '../pages/Arquivos' ;
 
+import ProtectedRoute from "../utils/ProtectedRoute";
+
 const Routing = () => {
     return (
         <Routes>
             <Route path="/*" element={< Landing />} />
             <Route path="/auth" element={< Auth />} />
-            <Route path='/arquivos/*' element={<Arquivos />} />
+            <Route element={<ProtectedRoute />}>
+                <Route path='/arquivos/*' element={<Arquivos />} />
+            </Route>
         </Routes>
     );
 }

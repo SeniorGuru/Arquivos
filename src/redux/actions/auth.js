@@ -78,23 +78,23 @@ export const SignInUser = (email, password) => async dispatch => {
         
         let userCredential = await signInWithEmailAndPassword(auth, email, password) ;
 
-        if(auth.currentUser.emailVerified) {
+        // if(auth.currentUser.emailVerified) {
            
-            setCookie('user_id', userCredential.user.uid ) ;
+        setCookie('user_id', userCredential.user.uid ) ;
 
-            let userDoc = await getDoc(doc(db, "Users", userCredential.user.uid)) ;
+        let userDoc = await getDoc(doc(db, "Users", userCredential.user.uid)) ;
 
-            await dispatch({
-                type : ActionTypes.SignInUser,
-                payload : {...userDoc.data()}
-            });
+        await dispatch({
+            type : ActionTypes.SignInUser,
+            payload : {...userDoc.data()}
+        });
 
-            return 200 ;
-        } else {
-            await sendEmailVerification(auth.currentUser) ;
+        return 200 ;
+        // } else {
+        //     await sendEmailVerification(auth.currentUser) ;
                 
-            return 201;
-        }
+        //     return 201;
+        // }
     } catch(err) {
 
         console.log(err) ;
@@ -142,7 +142,6 @@ export const AddCollaborator = (
                 house_hold,
                 inform_email,
                 password : md5(password),
-                creator_admin : getCookie('user_id')
             });
 
             await UploadDocFile(doc_file, userCredential.user.uid) ;

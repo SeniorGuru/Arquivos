@@ -7,6 +7,7 @@ import PropTypes from 'prop-types' ;
 import { AddCollaborator } from '../../redux/actions/auth';
 
 import { errorEmailHelper, errorPasswordHelper } from '../../utils/ErrorHandler' ;
+import Validator from 'validator' ;
 
 import swal from 'sweetalert';
 
@@ -136,6 +137,7 @@ const NewCollaborator = (props) => {
                     <RadioGroup
                         row
                         onChange={handleChangePos}
+                        value={position}
                     >
                         <FormControlLabel value="admin" control={<Radio />} label="Administrator " />
                         <FormControlLabel value="backoffice" control={<Radio />} label="Back office" />
@@ -223,6 +225,13 @@ const NewCollaborator = (props) => {
                 <Grid item xs={12}>
                     <Button variant='contained'
                         onClick={handleAddCollaborator}
+                        disabled={
+                            !position || !name || !isValidPhoneNumber(phoneNumber || '') 
+                            || !houseHold || !Validator.isEmail(informEmail || '') 
+                            || password?.length < 8 || !password
+                            || !photoImg.raw || !docFile.raw
+                            || !cav
+                        }
                     >
                         Register
                     </Button>

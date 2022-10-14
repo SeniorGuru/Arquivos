@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types' ;
-import { GetAdministrators, UpdateAdministrator } from '../../redux/actions/user';
+import { GetCollaborators, UpdateCollaborator } from '../../redux/actions/user';
 
-import { errorEmailHelper, errorPasswordHelper } from '../../utils/ErrorHandler' ;
+import { errorEmailHelper } from '../../utils/ErrorHandler' ;
+import Validator from 'validator';
 
 import swal from 'sweetalert';
+import Loading from 'react-loading-components' ;
 
 import UserImg from '../../assets/auth/user.png';
 
@@ -42,8 +44,8 @@ import {
 const EditModal = (props) => {
 
     const {
-        UpdateAdministrator,
-        GetAdministrators,
+        UpdateCollaborator,
+        GetCollaborators,
 
         open,
         handleClose,
@@ -54,6 +56,8 @@ const EditModal = (props) => {
 
     const theme = useTheme() ;
     const navigate = useNavigate() ;
+
+    const [loading, setLoading] = React.useState(false) ;
 
     const [phoneNumber, setPhoneNumber] = React.useState(null) ;
     const [photoImg, setPhotoImg] = React.useState({
@@ -89,26 +93,31 @@ const EditModal = (props) => {
     };
 
     const handleUpdate = async () => {
-        if(await UpdateAdministrator(updated_id, photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail)){
-            handleClose() ;
-            GetAdministrators() ;
+        setLoading(true) ;
 
-            return swal({
+        if(await UpdateCollaborator(updated_id, photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail)){
+            GetCollaborators() ;
+
+            swal({
                 title : 'Success',
                 text : 'Update Successfully',
                 icon : 'success',
                 buttons : false,
                 timer : 5000
             })
-        } ;
+        } else {
+            swal({
+                title : 'Failed',
+                text : 'Update Failed',
+                icon : 'error',
+                buttons : false,
+                timer : 5000
+            }) ;
+        }
 
-        swal({
-            title : 'Failed',
-            text : 'Update Failed',
-            icon : 'error',
-            buttons : false,
-            timer : 5000
-        })
+        setLoading(false);
+
+        handleClose() ;
     }
 
     React.useEffect(() => {
@@ -250,11 +259,18 @@ const EditModal = (props) => {
                     </Grid> */}
                 </Grid>
             </DialogContent>
+            <Divider />
             <DialogActions>
                 <Button variant='contained'
                     onClick={handleUpdate}
+                    disabled={
+                        loading 
+                        ||!position || !name || !isValidPhoneNumber(phoneNumber || '') 
+                        || !houseHold || !Validator.isEmail(informEmail || '') 
+                        || !cav
+                    }
                 >
-                    Update
+                    {loading && <Loading type='oval' width={20} height={20} fill={'white'} />} &nbsp; Update
                 </Button>
                 <Button variant='contained' onClick={handleClose}>Close</Button>
             </DialogActions>
@@ -262,14 +278,14 @@ const EditModal = (props) => {
     )
 }
 EditModal.propTypes = {
-    UpdateAdministrator: PropTypes.func.isRequired,
-    GetAdministrators : PropTypes.func.isRequired
+    UpdateCollaborator: PropTypes.func.isRequired,
+    GetCollaborators : PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
 
 })
 const mapDispatchToProps = {
-    UpdateAdministrator,
-    GetAdministrators
+    UpdateCollaborator,
+    GetCollaborators
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal) ;

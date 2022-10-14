@@ -2,21 +2,22 @@ import * as React from 'react' ;
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { GetAdministrators } from '../../redux/actions/user';
+import { GetCollaborators } from '../../redux/actions/user';
 
 import EditIcon from '@mui/icons-material/Edit';
 
 import { positions } from '../../static/constants';
+import { getCookie } from '../../utils/Helper';
 
 import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, CircularProgress } from '@mui/material';
 
-import EditModal from './EditModal';
+import EditModal from '../Modal/EditModal';
 
 const EditCollaborator = (props) => {
     const {
-        GetAdministrators,
+        GetCollaborators,
 
-        adminsList
+        adminList
     } = props ;
 
     const headList = [
@@ -44,13 +45,13 @@ const EditCollaborator = (props) => {
     }
 
     React.useEffect(() => {
-        if(adminsList) {
-            setFilterList(adminsList) ;
+        if(adminList) {
+            setFilterList(adminList.filter(row => row.id !== getCookie('user_id'))) ;
         }
-    }, [adminsList]) ;
+    }, [adminList]) ;
 
     React.useEffect(() => {
-        GetAdministrators() ;
+        GetCollaborators() ;
     }, []) ;
 
     return (
@@ -98,13 +99,13 @@ const EditCollaborator = (props) => {
     )
 }
 EditCollaborator.propTypes = {
-    GetAdministrators : PropTypes.func.isRequired
+    GetCollaborators : PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
-    adminsList : state.user.adminsList
+    adminList : state.user.adminList
 
 })
 const mapDispatchToProps = {
-    GetAdministrators
+    GetCollaborators
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EditCollaborator) ;

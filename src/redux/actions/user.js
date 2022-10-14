@@ -9,7 +9,6 @@ export const GetEmployees = () => async dispatch => {
         let employees = await getDocs(
             query(
                 collection(db, 'Users'), 
-                where('creator_admin', '==', getCookie('user_id')),
                 where('position', 'in' , ['backoffice', 'admin', 'teamleader'])
         )) ;
 
@@ -31,7 +30,6 @@ export const GetAdministrators = () => async dispatch => {
         let employees = await getDocs(
             query(
                 collection(db, 'Users'), 
-                where('creator_admin', '==', getCookie('user_id')),
                 where('position', '==' , 'admin')
         )) ;
 
@@ -48,7 +46,7 @@ export const GetAdministrators = () => async dispatch => {
     }
 }
 
-export const UpdateAdministrator = (
+export const UpdateCollaborator = (
     updated_id,
     photo,
     position,
@@ -80,11 +78,11 @@ export const UpdateAdministrator = (
 
 export const GetCollaborators = () => async dispatch => {
     try {
-        let adminDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'admin'), where('creator_admin', '==', getCookie('user_id')))) ;
-        let backOfficeDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'backoffice'), where('creator_admin', '==', getCookie('user_id')))) ;
-        let teamLeaderDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'teamleader'), where('creator_admin', '==', getCookie('user_id')))) ;
-        let coordinatorDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'coordinator'), where('creator_admin', '==', getCookie('user_id')))) ;
-        let managerDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'manager'), where('creator_admin', '==', getCookie('user_id')))) ;
+        let adminDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'admin'))) ;
+        let backOfficeDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'backoffice'))) ;
+        let teamLeaderDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'teamleader'))) ;
+        let coordinatorDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'coordinator'))) ;
+        let managerDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'manager'))) ;
 
         await dispatch({
             type : ActionTypes.GetCollaborators,

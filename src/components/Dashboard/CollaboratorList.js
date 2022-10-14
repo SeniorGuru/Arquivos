@@ -7,6 +7,8 @@ import {
     Table,TableHead,TableBody, CircularProgress
 } from '@mui/material';
 
+import { getCookie } from '../../utils/Helper';
+
 const CollaboratorList = (props) => {
     const headList = [
         "No",
@@ -26,7 +28,7 @@ const CollaboratorList = (props) => {
 
     React.useEffect(() => {
         if(dataList) {
-            setFilterList(dataList) ;
+            setFilterList(dataList.filter(row => row.id !== getCookie('user_id')))
         }
     }, [dataList]) ;
 

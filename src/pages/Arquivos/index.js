@@ -8,6 +8,9 @@ import ViewCollaborator from '../../components/Staff/ViewCollaborator';
 import EditCollaborator from '../../components/Staff/EditCollaborator';
 import NewCollaborator from '../../components/Staff/NewCollaborator';
 import Pending from './Pending';
+import Report from './Report';
+
+import AdminRoute from '../../utils/AdminRoute';
 
 import Navbar from '../../components/Layouts/Navbar';
 import Menubar from '../../components/Layouts/Menubar';
@@ -27,11 +30,14 @@ const Aruqivos = () => {
                 <ContentBody>
                     <Routes>
                         <Route path='/' element={<Dashboard />} />
-                        <Route path='/staff/new-collaborator' element={<NewCollaborator />}/>
-                        <Route path='/staff/view-collaborator' element={<ViewCollaborator />}/>
-                        <Route path='/staff/edit-collaborator' element={<EditCollaborator />}/>
-                        <Route path='/staff/*' element={<Staff />} />
+                        <Route element={<AdminRoute />}>
+                            <Route path='/staff/new-collaborator' element={<NewCollaborator />}/>
+                            <Route path='/staff/view-collaborator' element={<ViewCollaborator />}/>
+                            <Route path='/staff/edit-collaborator' element={<EditCollaborator />}/>
+                            <Route path='/staff/*' element={<Staff />} />
+                        </Route>
                         <Route path='/pending' element={<Pending />} />
+                        <Route path='/report' element={<Report/>} />
                     </Routes>
                 </ContentBody>
             </ContentMain>

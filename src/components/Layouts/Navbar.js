@@ -10,6 +10,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import { 
     LogoDiv,
@@ -70,6 +71,11 @@ const Navbar = () => {
             to : '/arquivos/pending',
             label : 'Pending',
             icon : <PublishedWithChangesIcon/>
+        },
+        {
+            to : '/arquivos/report',
+            label : 'Report',
+            icon : <AddBoxIcon/>
         }
     ]
 
