@@ -6,7 +6,9 @@ const ActionTypes = {
 
     GetEmployees: "GetEmployees",
     GetAdministrators : "GetAdministrators",
-    GetCollaborators : "GetCollaborators"
+    GetCollaborators : "GetCollaborators",
+
+    GetReports : "GetReports"
 }
 
 export default ActionTypes ;
