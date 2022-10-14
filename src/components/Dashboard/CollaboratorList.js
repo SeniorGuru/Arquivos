@@ -1,5 +1,7 @@
 import * as React from 'react' ;
 
+import { useTranslate } from '../../contexts/language' ;
+
 import styled from 'styled-components';
 
 import { 
@@ -11,18 +13,22 @@ import { getCookie } from '../../utils/Helper';
 
 const CollaboratorList = (props) => {
     const headList = [
-        "No",
-        "Avatar",
-        "Name",
-        "Position",
-        "Phone Number",
-        "Inform Email",
-        "CAV"
+        "no",
+        "avatar",
+        "name",
+        "position",
+        "phonenumber",
+        "informemail",
+        "cav"
     ] ;
 
     const {
         dataList
     } = props;
+
+    const {
+        sysLang
+    } = useTranslate() ;
 
     const [filterList, setFilterList] = React.useState(null) ;
 
@@ -39,7 +45,7 @@ const CollaboratorList = (props) => {
                     <TableRow>
                         {headList.map((head, index)=> (
                             <TableCell key={index}>
-                                {head}
+                                {sysLang[head]}
                             </TableCell>
                         ))}
                     </TableRow>

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { GetCollaborators } from '../../redux/actions/user' ;
 
+import { useTranslate } from '../../contexts/language';
+
 import CollaboratorList from '../../components/Dashboard/CollaboratorList';
 
 import { RootDiv } from './Styles/Dashboard.styles';
@@ -24,6 +26,10 @@ const Dashboard = (props) => {
         managerList
     } = props ;
 
+    const {
+        sysLang
+    } = useTranslate() ;
+
     const [selectedList, setSelectedList] = React.useState(null) ;
     
     React.useEffect(() => {
@@ -38,35 +44,35 @@ const Dashboard = (props) => {
         <RootDiv>
             <Card
                 color='primary'
-                label='Administrator'
+                label={sysLang['admin']}
                 cnt={adminList?.length}
                 onClick={() => setSelectedList(adminList)}
             />
 
             <Card
                 color='info'
-                label='Back Offcie'
+                label={sysLang['backoffice']}
                 cnt={backOfficeList?.length}
                 onClick={() => setSelectedList(backOfficeList)}
             />
 
             <Card
                 color='secondary'
-                label='Team Leader'
+                label={sysLang['teamleader']}
                 cnt={teamleaderList?.length}
                 onClick={() => setSelectedList(teamleaderList)}
             />
 
             <Card
                 color='danger'
-                label='Coordinator'
+                label={sysLang['coordinator']}
                 cnt={coordinatorList?.length}
                 onClick={() => setSelectedList(coordinatorList)}
             />
 
             <Card
                 color='success'
-                label='Manager'
+                label={sysLang['manager']}
                 cnt={managerList?.length}
                 onClick={() => setSelectedList(managerList)}
             />

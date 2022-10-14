@@ -8,7 +8,7 @@ import { ThemeProvider , CssBaseline } from '@mui/material';
 import theme from './utils/Theme' ;
 
 // Language 
-import { LanguageProvider } from "./contexts/language";
+import LanguageProvider from "./contexts/language";
 import AuthProvider from './contexts/auth';
 
 // Store

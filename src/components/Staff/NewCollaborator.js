@@ -1,6 +1,7 @@
 import * as React from 'react' ;
 
 import { useNavigate } from 'react-router-dom';
+import { useTranslate } from '../../contexts/language';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types' ;
@@ -48,6 +49,10 @@ const NewCollaborator = (props) => {
 
     const theme = useTheme() ;
     const navigate = useNavigate() ;
+
+    const {
+        sysLang
+    } = useTranslate() ;
 
     const [phoneNumber, setPhoneNumber] = React.useState(null) ;
     const [photoImg, setPhotoImg] = React.useState({
@@ -106,7 +111,7 @@ const NewCollaborator = (props) => {
 
     return (
         <RootDiv>
-            <TitleDiv>Register Collaborator</TitleDiv>
+            <TitleDiv>{`${sysLang['register']} ${sysLang['collaborator']}`}</TitleDiv>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <UploadForm>
@@ -139,17 +144,17 @@ const NewCollaborator = (props) => {
                         onChange={handleChangePos}
                         value={position}
                     >
-                        <FormControlLabel value="admin" control={<Radio />} label="Administrator " />
-                        <FormControlLabel value="backoffice" control={<Radio />} label="Back office" />
-                        <FormControlLabel value="teamleader" control={<Radio />} label="Team leader" />
-                        <FormControlLabel value="coordinator" control={<Radio />} label="Coordinator" />
-                        <FormControlLabel value="manager" control={<Radio />} label="Manager" />
+                        <FormControlLabel value="admin" control={<Radio />} label={sysLang['admin']} />
+                        <FormControlLabel value="backoffice" control={<Radio />} label={sysLang['backoffice']} />
+                        <FormControlLabel value="teamleader" control={<Radio />} label={sysLang['teamleader']} />
+                        <FormControlLabel value="coordinator" control={<Radio />} label={sysLang['coordinator']} />
+                        <FormControlLabel value="manager" control={<Radio />} label={sysLang['manager']} />
                     </RadioGroup>
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
                         size='small'
-                        label='CAV'
+                        label={sysLang['cav']}
                         value={cav || ''}
                         onChange={(e) => setCAV(e.target.value)}
                     />
@@ -157,7 +162,7 @@ const NewCollaborator = (props) => {
                 <Grid item xs={12}>
                     <TextField
                         size='small'
-                        label='Name'
+                        label={sysLang['name']}
                         value={name || ''}
                         onChange={(e) => setName(e.target.value)}
                     />
@@ -181,7 +186,7 @@ const NewCollaborator = (props) => {
                 <Grid item xs={12}>
                     <TextField
                         size='small'
-                        label='Household'
+                        label={sysLang['household']}
                         value={houseHold || ''}
                         onChange={(e) => setHouseHold(e.target.value)}
                     />
@@ -189,7 +194,7 @@ const NewCollaborator = (props) => {
                 <Grid item xs={12}>
                     <TextField
                         size='small'
-                        label='Inform Email'
+                        label={sysLang['informemail']}
                         value={informEmail || ''}
                         onChange={(e) => setInformEmail(e.target.value.toLowerCase())}
                         helperText={ errorEmailHelper(informEmail) }
@@ -199,7 +204,7 @@ const NewCollaborator = (props) => {
                 <Grid item xs={12}>
                     <TextField
                         size='small'
-                        label='Password'
+                        label={sysLang['password']}
                         value={password || ''}
                         onChange={(e) => setPassword(e.target.value)}
                         helperText={ errorPasswordHelper(password) }
@@ -233,7 +238,7 @@ const NewCollaborator = (props) => {
                             || !cav
                         }
                     >
-                        Register
+                        {sysLang['register']}
                     </Button>
                 </Grid>
             </Grid>

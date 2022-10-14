@@ -1,44 +1,31 @@
-import React, { useState, createContext , useContext } from 'react';
+import * as React from 'react' ;
 
-import { languageOptions, dictionaryList } from '../static/languages';
+import { dictionaryList } from '../constants/lang';
 
-// create the language context with default selected language
-export const LanguageContext = createContext({
-  userLanguage: 'en',
-  dictionary: dictionaryList.en
-});
+const LanguageContext = React.createContext({}) ;
 
-// it provides the language context to app
-export function LanguageProvider({ children }) {
-  
-  const [userLanguage, setUserLanguage] = useState('en');
+const LanguageProvider = ({children}) => {
+  const [sysLang, setSysLang] = React.useState(dictionaryList.en) ;
 
-  const provider = {
-    
-    userLanguage,
-    
-    dictionary: dictionaryList[userLanguage],
-    
-    userLanguageChange  : selected => {
-
-      const newLanguage = languageOptions[selected] ? selected : 'en'
-      setUserLanguage(newLanguage);
-      window.localStorage.setItem('rcml-lang', newLanguage);
-    
-    }
-  
-  };
+  const onChangeLanguage = (option) => {
+    setSysLang(dictionaryList[option])
+  }
 
   return (
-    <LanguageContext.Provider value={provider}>
+    <LanguageContext.Provider
+      value={{
+        sysLang,
+        onChangeLanguage,
+        langOpts : Object.keys(dictionaryList)
+      }}
+    >
       {children}
     </LanguageContext.Provider>
-  );
-};
+  )
+}
 
-// get text according to id & current language
-export function Text({ tid }) {
-  const languageContext = useContext(LanguageContext);
+export default LanguageProvider ;
 
-  return languageContext.dictionary[tid] || tid;
-};
+export const useTranslate = () => (
+  React.useContext(LanguageContext)
+)

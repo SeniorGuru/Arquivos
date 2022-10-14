@@ -1,6 +1,7 @@
 import * as React from 'react' ;
 
 import { useAuth } from '../../contexts/auth' ;
+import { useTranslate } from '../../contexts/language';
 
 import { getCookie } from '../../utils/Helper';
 
@@ -16,14 +17,14 @@ import EditModal from '../Modal/EditModal';
 
 const PublicList = (props) => {
     const headList = [
-        "No",
-        "Avatar",
-        "Name",
-        "Position",
-        "Phone Number",
-        "Inform Email",
-        "CAV",
-        "Edit / View"
+        "no",
+        "avatar",
+        "name",
+        "position",
+        "phonenumber",
+        "informemail",
+        "cav",
+        "edit-view"
     ] ;
 
     const {
@@ -33,6 +34,10 @@ const PublicList = (props) => {
     const {
         profile
     } = useAuth() ;
+
+    const {
+        sysLang
+    } = useTranslate() ;
 
     const [filterList, setFilterList] = React.useState(null) ;
 
@@ -74,7 +79,7 @@ const PublicList = (props) => {
                         <TableRow>
                             {headList.map((head, index)=> (
                                 <TableCell key={index}>
-                                    {head}
+                                    { head === 'edit-view' ? `${sysLang['edit']}/${sysLang['view']}` : sysLang[head]}
                                 </TableCell>
                             ))}
                         </TableRow>
@@ -99,13 +104,15 @@ const PublicList = (props) => {
                                             <Button variant='contained' size='small'
                                                 disabled={profile?.position !== 'admin'}
                                                 onClick={() => handleOpenEditModal(row.data(), row.id)}
+                                                sx={{textTransform : 'capitalize'}}
                                             >
-                                                Edit
+                                                {sysLang['edit']}
                                             </Button>
                                             <Button variant='contained' size='small' color='success'
                                                 onClick={() => handleOpenViewModal(row.data())}
+                                                sx={{textTransform : 'capitalize'}}
                                             >
-                                                View
+                                                {sysLang['view']}
                                             </Button>
                                         </ButtonGroup>
                                     </TableCell>

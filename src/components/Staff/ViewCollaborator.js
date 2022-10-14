@@ -1,5 +1,7 @@
 import * as React from 'react' ;
 
+import { useTranslate } from '../../contexts/language';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { GetEmployees } from '../../redux/actions/user';
@@ -20,12 +22,16 @@ const ViewCollaborator = (props) => {
         employeesList
     } = props ;
 
+    const {
+        sysLang
+    } = useTranslate() ;
+
     const headList = [
-        "No",
-        "Name",
-        "Position",
-        "Email",
-        "View"
+        "no",
+        "name",
+        "position",
+        "informemail",
+        "view"
     ]
 
     const [filterList, setFilterList] = React.useState(null) ;
@@ -60,7 +66,7 @@ const ViewCollaborator = (props) => {
                         <TableRow>
                             {headList.map((head, index) => (
                                 <TableCell key={index}>
-                                    {head}
+                                    {sysLang[head]}
                                 </TableCell>
                             ))}
                         </TableRow>

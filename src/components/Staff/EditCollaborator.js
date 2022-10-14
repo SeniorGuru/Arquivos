@@ -1,5 +1,7 @@
 import * as React from 'react' ;
 
+import { useTranslate } from '../../contexts/language';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { GetCollaborators } from '../../redux/actions/user';
@@ -20,12 +22,16 @@ const EditCollaborator = (props) => {
         adminList
     } = props ;
 
+    const {
+        sysLang
+    } = useTranslate() ;
+
     const headList = [
-        "No",
-        "Name",
-        "Position",
-        "Email",
-        "Edit"
+        "no",
+        "name",
+        "position",
+        "informemail",
+        "edit"
     ]
 
     const [filterList, setFilterList] = React.useState(null) ;
@@ -62,7 +68,7 @@ const EditCollaborator = (props) => {
                         <TableRow>
                             {headList.map((head, index) => (
                                 <TableCell key={index}>
-                                    {head}
+                                    {sysLang[head]}
                                 </TableCell>
                             ))}
                         </TableRow>

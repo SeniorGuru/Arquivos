@@ -1,5 +1,7 @@
 import * as React from 'react' ;
 
+import { useTranslate } from '../../contexts/language';
+
 import styled from 'styled-components' ;
 
 import { useTheme } from '@mui/styles';
@@ -11,6 +13,10 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 const Card = (props) => {
     const theme = useTheme() ;
+
+    const {
+        sysLang
+    } = useTranslate() ;
 
     const {
         color, cnt, label,
@@ -33,7 +39,7 @@ const Card = (props) => {
             <CardFooter
                 onClick={onClick}
             >
-                Access &nbsp; <ArrowCircleRightIcon/>
+                {sysLang['access']} &nbsp; <ArrowCircleRightIcon/>
             </CardFooter>
         </CardMain>
     )

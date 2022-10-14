@@ -1,6 +1,7 @@
 import * as React from 'react' ;
 
 import { useNavigate } from 'react-router-dom';
+import { useTranslate } from '../../contexts/language';
 
 import Card from '../../shared/ui/Card';
 
@@ -10,6 +11,10 @@ import {
 
 const Staff = () => {
     const navigate = useNavigate() ;
+
+    const {
+        sysLang
+    } = useTranslate() ;
 
     const handleGoNew = () => {
         navigate('/arquivos/staff/new-collaborator') ;
@@ -27,19 +32,19 @@ const Staff = () => {
         <RootDiv>
             <Card 
                 color='primary'
-                label={'New Collaborator'}
+                label={sysLang['newcollaborator']}
                 onClick={handleGoNew}
             />
 
             <Card 
                 color='danger'
-                label={'View Collaborator'}
+                label={sysLang['viewcollaborator']}
                 onClick={handleGoView}
             />
 
             <Card 
                 color='success'
-                label={'Edit Collaborator'}
+                label={sysLang['editcollaborator']}
                 onClick={handleGoEdit}
             />
         </RootDiv>

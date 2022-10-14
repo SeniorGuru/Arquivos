@@ -7,6 +7,17 @@ export const MenubarMain = styled.div`
     display : flex;
     justify-content : flex-end;
     align-items : center;
+    gap : 20px;
 
     padding-right : 10px;
+`
+
+export const TranlationGroup = styled.div`
+    display : flex;
+    align-items : center;
+
+    & svg  {
+        color : white;
+        font-size : 18px;
+    }
 `
