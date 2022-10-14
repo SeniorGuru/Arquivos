@@ -1,6 +1,6 @@
 import * as React from 'react' ;
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth';
 import { useTranslate } from '../../contexts/language' ;
@@ -12,6 +12,13 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import CloseIcon from '@mui/icons-material/Close';
+
+import styled from 'styled-components';
+
+import {
+    Button
+} from '../../shared/ui' ;
 
 import { 
     LogoDiv,
@@ -30,11 +37,21 @@ import { useTheme } from '@mui/styles';
 import {
     Divider,
     List,
-    ListItem
+    IconButton,
+    ListItem,
+    useMediaQuery
 } from '@mui/material';
+import { eraseCookie } from '../../utils/Helper';
 
-const Navbar = () => {
+const Navbar = (props) => {
+    const {
+        handleClose
+    } = props ;
+
     const theme = useTheme() ;
+    const navigate = useNavigate() ;
+
+    const match690 = useMediaQuery('(min-width : 690px)') ;
 
     const {
         profile
@@ -84,6 +101,11 @@ const Navbar = () => {
         }
     ]
 
+    const handleSignOut = () => {
+        eraseCookie('user_id') ;
+        navigate('/auth') ;
+    }
+
     return (
         <NavbarMain>
             <LogoDiv 
@@ -91,6 +113,17 @@ const Navbar = () => {
             >
                 {sysLang.logo}
             </LogoDiv>
+            {
+                !match690 && <CloseDiv>
+                    <IconButton
+                        onClick={handleClose}
+                        color='success'
+                    >
+                        <CloseIcon/>
+                    </IconButton>
+                </CloseDiv>
+            }
+            <Divider />
             {
                 profile && <ProfileDiv>
                     <Avatar src={profile.profile_photo_url} />
@@ -111,7 +144,9 @@ const Navbar = () => {
                         <div key={index}>
                             <ListItem>
                                 <div>
-                                    <Link to={nav.to}>
+                                    <Link to={nav.to}
+                                        onClick={handleClose}
+                                    >
                                         <NavItem>
                                             {nav.icon}
                                             {sysLang[nav.label]}
@@ -119,7 +154,9 @@ const Navbar = () => {
                                     </Link>
                                     {
                                         nav.subNavs ? nav.subNavs.map((subNav, index) => (
-                                                <Link to={subNav.to} key={index}>
+                                                <Link to={subNav.to} key={index}
+                                                    onClick={handleClose}
+                                                >
                                                     <SubNavItem>
                                                         {sysLang[subNav.label]}
                                                         {subNav.icon}
@@ -133,9 +170,24 @@ const Navbar = () => {
                         </div>
                     ))
                 }
+                {
+                    !match690 && <ListItem>
+                        <Button variant={'contained'}
+                            onClick={handleSignOut}
+                        >Sign Out</Button>
+                    </ListItem>
+                }
             </List>
         </NavbarMain>
     )
 }
 
 export default Navbar ;
+
+const CloseDiv = styled.div`
+    display : flex;
+    justify-content : flex-end;
+
+    padding-top : 10px;
+    padding-right : 20px;
+`

@@ -5,8 +5,12 @@ export const ArquivosMain = styled.div`
 `
 
 export const ContentMain = styled.div`
-    width : 100%;
+    width : calc(100vw - 250px);
     min-height : 100vh;
+
+    @media (max-width: 690px) {
+        width : 100vw ;
+    }
 `
 export const ContentBody = styled.div`
     padding : 20px;

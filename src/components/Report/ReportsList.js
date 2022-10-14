@@ -96,6 +96,7 @@ export default ReportsList ;
 
 const DownloadDiv = styled.div`
     margin-top : 15px;
+    margin-bottom : 15px;
     display : flex;
-    justify-content : flex-end;
+    justify-content : flex-start;
 `

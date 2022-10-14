@@ -21,10 +21,14 @@ import {
     ContentBody
 } from './Styles/index.styles';
 
-const Aruqivos = () => { 
+import { useMediaQuery } from '@mui/material';
+
+const Aruqivos = () => {
+    const match690 = useMediaQuery('(min-width : 690px)') ;
+
     return (
         <ArquivosMain>
-            <Navbar />
+            { match690 && <Navbar /> }
             <ContentMain>
                 <Menubar />
                 <ContentBody>
