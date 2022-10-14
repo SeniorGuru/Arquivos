@@ -45,11 +45,13 @@ const CardMain = styled.div`
     background : ${props => props.backgroundColor} ;
     color : white ;
 
-    width : fit-content ;
+    width : 200px ;
+    height : fit-content;
 `
 const CardBody = styled.div`
     display : flex;
-    gap : 10px;
+    justify-content : space-between;
+    align-items : center;
     padding : 10px;
 `
 

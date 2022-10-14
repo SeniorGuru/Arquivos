@@ -77,3 +77,29 @@ export const UpdateAdministrator = (
         return false ;
     }
 }
+
+export const GetCollaborators = () => async dispatch => {
+    try {
+        let adminDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'admin'), where('creator_admin', '==', getCookie('user_id')))) ;
+        let backOfficeDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'backoffice'), where('creator_admin', '==', getCookie('user_id')))) ;
+        let teamLeaderDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'teamleader'), where('creator_admin', '==', getCookie('user_id')))) ;
+        let coordinatorDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'coordinator'), where('creator_admin', '==', getCookie('user_id')))) ;
+        let managerDocs = await getDocs(query(collection(db, 'Users'), where('position', '==', 'manager'), where('creator_admin', '==', getCookie('user_id')))) ;
+
+        await dispatch({
+            type : ActionTypes.GetCollaborators,
+            payload : {
+                adminList: adminDocs.docs,
+                backOfficeList : backOfficeDocs.docs,
+                teamleaderList : teamLeaderDocs.docs,
+                coordinatorList : coordinatorDocs.docs,
+                managerList : managerDocs.docs
+            }
+        });
+
+        return true ;
+    } catch(err) {
+        console.log(err) ;
+        return false ;
+    }
+}

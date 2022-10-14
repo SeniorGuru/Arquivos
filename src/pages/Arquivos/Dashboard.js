@@ -1,71 +1,93 @@
 import * as React from 'react' ;
 
-import { useAuth } from '../../contexts/auth';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { GetCollaborators } from '../../redux/actions/user' ;
+
+import CollaboratorList from '../../components/Dashboard/CollaboratorList';
+
+import { RootDiv } from './Styles/Dashboard.styles';
 
 import {
-    Grid
-} from '@mui/material' ;
+    Card
+} from '../../shared/ui' ;
 
-import {
-    Avatar,
-    LabelDiv,
-    ValueDiv,
-    InformDiv,
-    MainInform,
-    PositionDiv,
-    NameDiv
-} from './Styles/Dashboard.styles';
-
-import { positions } from '../../static/constants';
-
-const Dashboard = () => {
+const Dashboard = (props) => {
+    
     const {
-        profile
-    } = useAuth() ;
+        GetCollaborators,
+
+        adminList,
+        backOfficeList,
+        teamleaderList,
+        coordinatorList,
+        managerList
+    } = props ;
+
+    const [selectedList, setSelectedList] = React.useState(null) ;
+    
+    React.useEffect(() => {
+        GetCollaborators() ;
+    }, []) ;
 
     React.useEffect(() => {
-        console.log(profile) ;
-    } , [profile]) ;
+        setSelectedList(adminList || null) ;
+    }, [adminList]) ;
 
     return (
-        <Grid container>
-            <Grid item xs={6}>
-                {
-                    profile && <>
-                        <MainInform>
-                            <Avatar src={profile.profile_photo_url} />
-                            <NameDiv>
-                                {profile.name}
-                            </NameDiv>
-                            <PositionDiv >
-                                {positions[profile.position]}
-                            </PositionDiv>
-                        </MainInform>
-                        <InformDiv>
-                            <LabelDiv >Name</LabelDiv>
-                            <ValueDiv>{profile.name}</ValueDiv>
-                        </InformDiv>
-                        <InformDiv>
-                            <LabelDiv >House Hold</LabelDiv>
-                            <ValueDiv>{profile.house_hold}</ValueDiv>
-                        </InformDiv>
-                        <InformDiv>
-                            <LabelDiv >Phone Number</LabelDiv>
-                            <ValueDiv>{profile.phone_number}</ValueDiv>
-                        </InformDiv>
-                        <InformDiv>
-                            <LabelDiv >Email</LabelDiv>
-                            <ValueDiv>{profile.inform_email}</ValueDiv>
-                        </InformDiv>
-                        <InformDiv>
-                            <LabelDiv >CAV</LabelDiv>
-                            <ValueDiv>{profile.cav}</ValueDiv>
-                        </InformDiv>
-                    </>
-                }
-            </Grid>
-        </Grid>
+        <RootDiv>
+            <Card
+                color='primary'
+                label='Administrator'
+                cnt={adminList?.length}
+                onClick={() => setSelectedList(adminList)}
+            />
+
+            <Card
+                color='info'
+                label='Back Offcie'
+                cnt={backOfficeList?.length}
+                onClick={() => setSelectedList(backOfficeList)}
+            />
+
+            <Card
+                color='secondary'
+                label='Team Leader'
+                cnt={teamleaderList?.length}
+                onClick={() => setSelectedList(teamleaderList)}
+            />
+
+            <Card
+                color='danger'
+                label='Coordinator'
+                cnt={coordinatorList?.length}
+                onClick={() => setSelectedList(coordinatorList)}
+            />
+
+            <Card
+                color='success'
+                label='Manager'
+                cnt={managerList?.length}
+                onClick={() => setSelectedList(managerList)}
+            />
+
+            <CollaboratorList 
+                dataList={selectedList}
+            />
+        </RootDiv>
     )
 }
-
-export default Dashboard ;
+Dashboard.propTypes = {
+    GetCollaborators : PropTypes.func.isRequired
+}
+const mapStateToProps = state => ({
+    adminList: state.user.adminList,
+    backOfficeList : state.user.backOfficeList,
+    teamleaderList : state.user.teamleaderList,
+    coordinatorList : state.user.coordinatorList,
+    managerList : state.user.managerList
+})
+const mapDispatchToProps = {
+    GetCollaborators
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard) ;
