@@ -1,7 +1,5 @@
 import * as React from 'react' ;
 
-import { useNavigate } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types' ;
 import { GetCollaborators, UpdateCollaborator } from '../../redux/actions/user';
@@ -26,7 +24,8 @@ import {
     DialogTitle,
     Divider,
     DialogContent,
-    DialogActions
+    DialogActions,
+    Checkbox
 } from '@mui/material';
 
 import {
@@ -55,10 +54,10 @@ const EditModal = (props) => {
     } = props ;
 
     const theme = useTheme() ;
-    const navigate = useNavigate() ;
 
     const [loading, setLoading] = React.useState(false) ;
 
+    const [disabledRole, setDisabledRole] = React.useState(false) ;
     const [phoneNumber, setPhoneNumber] = React.useState(null) ;
     const [photoImg, setPhotoImg] = React.useState({
         preview : "",
@@ -95,7 +94,7 @@ const EditModal = (props) => {
     const handleUpdate = async () => {
         setLoading(true) ;
 
-        if(await UpdateCollaborator(updated_id, photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail)){
+        if(await UpdateCollaborator(updated_id, photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail, !disabledRole)){
             GetCollaborators() ;
 
             swal({
@@ -132,6 +131,7 @@ const EditModal = (props) => {
         setPhoneNumber(data?.phone_number || null); 
         setHouseHold(data?.house_hold || null);
         setInformEmail(data?.inform_email || null);
+        setDisabledRole(!data?.enabled_role) ;
     }, [data]) ;
 
     return (
@@ -167,6 +167,9 @@ const EditModal = (props) => {
                                 onChange={handleChangePhoto}
                             />
                         </UploadForm>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControlLabel control={<Checkbox checked={disabledRole} onChange={(e) => setDisabledRole(e.target.checked)} />} label='Disable Access' />
                     </Grid>
                     <Grid item xs={12}>
                         <RadioGroup

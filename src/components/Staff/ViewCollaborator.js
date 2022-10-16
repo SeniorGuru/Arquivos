@@ -38,9 +38,11 @@ const ViewCollaborator = (props) => {
 
     const [openModal, setOpenModal] = React.useState(false) ;
     const [selected_data, setSelectedData] = React.useState(null) ;
+    const [selected_id, setSelectedId] = React.useState(null);
 
-    const handleOpenModal = (data) => {
+    const handleOpenModal = (data,id) => {
         setSelectedData(data) ;
+        setSelectedId(id) ;
 
         setOpenModal(true) ;
     }
@@ -80,7 +82,7 @@ const ViewCollaborator = (props) => {
                                     <TableCell>{positions[row.data().position]}</TableCell>
                                     <TableCell>{row.data().inform_email}</TableCell>
                                     <TableCell sx={{cursor : 'pointer'}}
-                                        onClick={() => handleOpenModal(row.data())}
+                                        onClick={() => handleOpenModal(row.data(), row.id)}
                                     ><RemoveRedEyeIcon/></TableCell>
                                 </TableRow>
                             )) : <TableRow>
@@ -97,6 +99,8 @@ const ViewCollaborator = (props) => {
                 open={openModal}
                 handleClose={handleCloseModal}
                 data={selected_data}
+                id={selected_id}
+                hiddenForm={false}
             />
         </>
     )

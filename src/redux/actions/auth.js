@@ -1,12 +1,10 @@
 import ActionTypes from "./actionTypes";
 
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword,
-    signInWithPhoneNumber, sendPasswordResetEmail,
-   onAuthStateChanged, getAuth, signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 
-import { doc, setDoc, getDoc, updateDoc, query, where, collection, getDocs, Timestamp, deleteDoc } from 'firebase/firestore' ;
+import { doc, setDoc, getDoc, query, where, collection, getDocs } from 'firebase/firestore' ;
 
-import { db, auth, storage, firebaseApp } from '../../firebase/config';
+import { db, auth } from '../../firebase/config';
 
 import md5 from 'md5' ;
 
@@ -115,42 +113,3 @@ export const SignInUser = (email, password) => async dispatch => {
     }
 }
 
-export const AddCollaborator = (
-    photo,
-    position,
-    cav,
-    name,
-    phone_number,
-    house_hold,
-    inform_email,
-    password,
-    doc_file
-) => async dispatch => {
-    try {
-        let userDocs = await getDocs(query(collection(db, "Users"), where('email', '==', inform_email)));
-
-        if(!userDocs.size) {
-            let userCredential = await createUserWithEmailAndPassword(auth, inform_email, password) ;
-
-            await sendEmailVerification(auth.currentUser) ;
-
-            await setDoc(doc(db, "Users", userCredential.user.uid), {
-                position,
-                cav,
-                name,
-                phone_number,
-                house_hold,
-                inform_email,
-                password : md5(password),
-            });
-
-            await UploadDocFile(doc_file, userCredential.user.uid) ;
-            await UploadPhotoImage(photo, userCredential.user.uid) ;
-
-            return userCredential.user.uid ;
-        }
-    } catch(err) {
-        console.log(err) ;
-        return false ;
-    }
-}

@@ -1,8 +1,11 @@
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import { db } from '../../firebase/config';
-import { UploadPhotoImage } from '../../firebase/upload';
-import { getCookie } from '../../utils/Helper';
+import { collection, doc, getDocs, query, updateDoc, where, setDoc } from 'firebase/firestore';
+import { UploadPhotoImage, UploadDocFile } from '../../firebase/upload';
 import ActionTypes from './actionTypes' ;
+
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { db, auth } from '../../firebase/config';
+
+import md5 from 'md5';
 
 export const GetEmployees = () => async dispatch => {
     try {
@@ -55,6 +58,7 @@ export const UpdateCollaborator = (
     phone_number,
     house_hold,
     inform_email,
+    enabled_role
 ) => async dispatch => {
     try {
         await updateDoc(doc(db, "Users", updated_id), {
@@ -63,7 +67,8 @@ export const UpdateCollaborator = (
             name,
             phone_number,
             house_hold,
-            inform_email
+            inform_email,
+            enabled_role
         }) ;
 
         await UploadPhotoImage(photo, updated_id) ;
@@ -94,6 +99,60 @@ export const GetCollaborators = () => async dispatch => {
                 managerList : managerDocs.docs
             }
         });
+
+        return true ;
+    } catch(err) {
+        console.log(err) ;
+        return false ;
+    }
+}
+
+export const AddCollaborator = (
+    photo,
+    position,
+    cav,
+    name,
+    phone_number,
+    house_hold,
+    inform_email,
+    password,
+    doc_file
+) => async dispatch => {
+    try {
+        let userDocs = await getDocs(query(collection(db, "Users"), where('email', '==', inform_email)));
+
+        if(!userDocs.size) {
+            let userCredential = await createUserWithEmailAndPassword(auth, inform_email, password) ;
+
+            await sendEmailVerification(auth.currentUser) ;
+
+            await setDoc(doc(db, "Users", userCredential.user.uid), {
+                position,
+                cav,
+                name,
+                phone_number,
+                house_hold,
+                inform_email,
+                password : md5(password),
+                enabled_role : ['admin', 'backoffice', 'teamleader'].includes(position) ? true : false
+            });
+
+            await UploadDocFile(doc_file, userCredential.user.uid) ;
+            await UploadPhotoImage(photo, userCredential.user.uid) ;
+
+            return userCredential.user.uid ;
+        }
+    } catch(err) {
+        console.log(err) ;
+        return false ;
+    }
+}
+
+export const UpdateAccessRole = (updated_id, enabled_role) => async dispatch => {
+    try {
+        await updateDoc(doc(db, "Users", updated_id), {
+            enabled_role
+        }) ;
 
         return true ;
     } catch(err) {

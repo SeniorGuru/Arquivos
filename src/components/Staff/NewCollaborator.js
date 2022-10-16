@@ -5,7 +5,7 @@ import { useTranslate } from '../../contexts/language';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types' ;
-import { AddCollaborator } from '../../redux/actions/auth';
+import { AddCollaborator } from '../../redux/actions/user';
 
 import { errorEmailHelper, errorPasswordHelper } from '../../utils/ErrorHandler' ;
 import Validator from 'validator' ;
@@ -77,6 +77,8 @@ const NewCollaborator = (props) => {
     }
 
     const handleChangeDoc = (e) => {
+        console.log(e.target.files[0].name) ;
+        
         setDocFile({
             name : e.target.files[0].name,
             raw : e.target.files[0]

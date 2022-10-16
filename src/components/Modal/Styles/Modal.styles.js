@@ -28,6 +28,9 @@ export const InformDiv = styled.div`
 `
 
 export const LabelDiv = styled.div`
+    display : flex;
+    align-items : center;
+    
     font-size : 16px;
     font-weight : bold;
 `

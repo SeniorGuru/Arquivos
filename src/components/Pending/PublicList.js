@@ -46,8 +46,9 @@ const PublicList = (props) => {
     const [selected_data, setSelectedData] = React.useState(null) ;
     const [selected_id, setSelectedId] = React.useState(null) ;
 
-    const handleOpenViewModal = (data) => {
+    const handleOpenViewModal = (data, id) => {
         setSelectedData(data) ;
+        setSelectedId(id) ;
 
         setOpenViewModal(true) ;
     }
@@ -131,6 +132,8 @@ const PublicList = (props) => {
                 open={openViewModal}
                 handleClose={handleCloseViewModal}
                 data={selected_data}
+                id={selected_id}
+                hiddenForm={true}
             />
 
             <EditModal 
