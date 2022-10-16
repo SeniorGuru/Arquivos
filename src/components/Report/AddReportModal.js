@@ -35,7 +35,7 @@ const AddReportModal = (props) => {
     const [vpp, setVpp] = React.useState(null) ;
     const [nos_cnt_year, setNosCntYear] = React.useState(0) ;
     const [nos_cnt_date, setNosCntDay] = React.useState(0) ;
-    const [type_pending, setTypePending] = React.useState(null) ;
+    const [type_pending, setTypePending] = React.useState('nos') ;
 
     const handleGenerateReport = async () => {
         setLoading(true) ;
@@ -145,13 +145,19 @@ const AddReportModal = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField 
-                            label={'Type Pending'}
-                            size='small'
-                            value={type_pending || ''}
-                            onChange={(e)=>setTypePending(e.target.value)}
-                            fullWidth
-                        />
+                        <FormControl sx={{minWidth : '100px'}}>
+                            <InputLabel id="type-pending-select-label">Type Pending</InputLabel>
+                            <Select 
+                                labelId="type-pending-select-label"
+                                size='small'
+                                value={type_pending}
+                                onChange={(e)=>setTypePending(e.target.value)}
+                                label="Type Pending"
+                            >
+                                <MenuItem value='nos'>NOS</MenuItem>
+                                <MenuItem value='alarm'>Alarm</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl sx={{minWidth : '100px'}}>
