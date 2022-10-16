@@ -24,9 +24,9 @@ const App = () => {
 
   React.useEffect(() => {
     window.process = {
-      ...window.process
+      ...window.process,
     };
-  }, [])
+  }, []);
 
   return (
     <BrowserRouter>

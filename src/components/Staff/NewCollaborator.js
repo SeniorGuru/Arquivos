@@ -50,6 +50,7 @@ import {
 import {
     useTheme
 } from '@mui/styles' ;
+import CsvDataTable from './CsvDataTable';
 
 const NewCollaborator = (props) => {
 
@@ -64,6 +65,8 @@ const NewCollaborator = (props) => {
         sysLang
     } = useTranslate() ;
 
+    const reader = new FileReader();
+    const [csvData, setCsvData] = React.useState([]) ;
     const [phoneNumber, setPhoneNumber] = React.useState(null) ;
     const [photoImg, setPhotoImg] = React.useState({
         preview : "",
@@ -81,6 +84,7 @@ const NewCollaborator = (props) => {
     const [houseHold, setHouseHold] = React.useState(null) ;
     const [informEmail, setInformEmail] = React.useState(null) ;
     const [password, setPassword] = React.useState(null) ;
+
     const handleChangePhoto = (e) => {
         setPhotoImg({
             preview: URL.createObjectURL(e.target.files[0]),
@@ -90,6 +94,8 @@ const NewCollaborator = (props) => {
     }
 
     const handleChangeDoc = async (e) => {
+        if(!e.target.files.length) return ;
+
         let preview ;
 
         if(getExtension(e.target.files[0].name) === 'doc') {
@@ -98,6 +104,8 @@ const NewCollaborator = (props) => {
             let uploadTask = await uploadBytesResumable(storageRef, e.target.files[0]) ;
     
             preview = await getDownloadURL(uploadTask.ref) ;
+        } else if(getExtension(e.target.files[0].name) === 'csv') {
+            reader.readAsText(e.target.files[0]);
         } else preview = URL.createObjectURL(e.target.files[0]) ;
         
         setDocFile({
@@ -132,6 +140,22 @@ const NewCollaborator = (props) => {
             timer : 5000
         })
     }
+
+    React.useEffect(() => {
+        reader.onload = (e) => {
+            let data = e.target.result;
+
+            const tempList = [] ;
+
+            data = data.split("\r\n"); 
+
+            for (let row of data) { 
+                tempList.push(row.split(',')) ;
+            }
+
+            setCsvData([...tempList]) ;
+        };
+    }, []) ;
 
     return (
         <RootDiv>
@@ -239,7 +263,7 @@ const NewCollaborator = (props) => {
                     <UploadForm>
                         <UploadInput htmlFor="arial-doc">
                         {
-                            <u>Upload PDF, DOCX</u>
+                            <u>Upload PDF, DOCX, CSV</u>
                         }
                         </UploadInput>
                         {
@@ -263,6 +287,9 @@ const NewCollaborator = (props) => {
                                 height={400}
                                 key={uuidv4()}
                             />
+                        }
+                        {
+                            getExtension(docFile.name) === 'csv' && <CsvDataTable csvData={csvData} />
                         }
                         <input
                             type="file"

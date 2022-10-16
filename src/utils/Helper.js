@@ -37,7 +37,6 @@ export const eraseCookie = async (cname) => {
 }
 
 export const getExtension = (file_name) => {
-    console.log(file_name.split('.').pop().toLowerCase());
     return file_name.split('.').pop().toLowerCase() ;
 }
 

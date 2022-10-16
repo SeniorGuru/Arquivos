@@ -7,7 +7,7 @@ import { db, auth } from '../../firebase/config';
 
 import md5 from 'md5';
 
-import path from 'path' ;
+import {getExtension} from '../../utils/Helper' ;
 
 export const GetEmployees = () => async dispatch => {
     try {
@@ -141,8 +141,8 @@ export const AddCollaborator = (
                 enabled_role : ['admin', 'backoffice', 'teamleader'].includes(position) ? true : false
             });
 
-            await UploadDocFile(doc_file , path.extname(doc_file_name) , userCredential.user.uid) ;
-            await UploadPhotoImage(photo, path.extname(photo_name) ,userCredential.user.uid) ;
+            await UploadDocFile(doc_file , getExtension(doc_file_name) , userCredential.user.uid) ;
+            await UploadPhotoImage(photo, getExtension(photo_name) ,userCredential.user.uid) ;
 
             return userCredential.user.uid ;
         }
