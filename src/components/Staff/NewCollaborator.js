@@ -11,6 +11,10 @@ import { errorEmailHelper, errorPasswordHelper } from '../../utils/ErrorHandler'
 import Validator from 'validator' ;
 
 import swal from 'sweetalert';
+import { getExtension } from '../../utils/Helper';
+import { storage  } from '../../firebase/config' ;
+import { uploadBytesResumable ,ref , getDownloadURL} from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid' ;
 
 import UserImg from '../../assets/auth/user.png';
 
@@ -38,6 +42,12 @@ import {
 } from '../../shared/ui' ;
 
 import {
+    PdfPreview,
+    DocPreview,
+    DocxPreview
+} from '../../shared/components' ;
+
+import {
     useTheme
 } from '@mui/styles' ;
 
@@ -57,11 +67,13 @@ const NewCollaborator = (props) => {
     const [phoneNumber, setPhoneNumber] = React.useState(null) ;
     const [photoImg, setPhotoImg] = React.useState({
         preview : "",
-        raw : ""
+        raw : "",
+        name : ""
     }) ;
     const [docFile, setDocFile] = React.useState({
         name : "",
-        raw : ""
+        raw : "",
+        preview : ""
     }) ;
     const [position, setPosition] = React.useState('admin') ;
     const [cav, setCAV] = React.useState(null) ;
@@ -72,16 +84,26 @@ const NewCollaborator = (props) => {
     const handleChangePhoto = (e) => {
         setPhotoImg({
             preview: URL.createObjectURL(e.target.files[0]),
-            raw : e.target.files[0]
+            raw : e.target.files[0],
+            name : e.target.files[0].name
         })
     }
 
-    const handleChangeDoc = (e) => {
-        console.log(e.target.files[0].name) ;
+    const handleChangeDoc = async (e) => {
+        let preview ;
+
+        if(getExtension(e.target.files[0].name) === 'doc') {
+            let storageRef = ref(storage, '_doc_temp/' + uuidv4()) ;
+
+            let uploadTask = await uploadBytesResumable(storageRef, e.target.files[0]) ;
+    
+            preview = await getDownloadURL(uploadTask.ref) ;
+        } else preview = URL.createObjectURL(e.target.files[0]) ;
         
         setDocFile({
             name : e.target.files[0].name,
-            raw : e.target.files[0]
+            raw : e.target.files[0],
+            preview
         })
     }
 
@@ -90,7 +112,7 @@ const NewCollaborator = (props) => {
     };
 
     const handleAddCollaborator = async () => {
-        if(AddCollaborator(photoImg.raw, position, cav, name, phoneNumber, houseHold, informEmail, password, docFile.raw)){
+        if(AddCollaborator(photoImg.raw, photoImg.name, position, cav, name, phoneNumber, houseHold, informEmail, password, docFile.raw, docFile.name)){
             navigate('/arquivos/staff') ;
 
             return swal({
@@ -212,19 +234,42 @@ const NewCollaborator = (props) => {
                         helperText={ errorPasswordHelper(password) }
                     />
                 </Grid>
+                
                 <Grid item xs={12}>
                     <UploadForm>
                         <UploadInput htmlFor="arial-doc">
                         {
-                            docFile.name || "Upload Csv, Docx, Pdf"
+                            <u>Upload PDF, DOCX</u>
                         }
                         </UploadInput>
+                        {
+                            getExtension(docFile.name) === 'pdf' && <PdfPreview 
+                                previewUrl={docFile.preview}
+                                width={300}
+                                height={300}
+                            />
+                        }
+                        {
+                            getExtension(docFile.name) === 'doc' && <DocPreview
+                                previewUrl={docFile.preview}
+                                width={400}
+                                height={400}
+                            />
+                        }
+                        {
+                            getExtension(docFile.name) === 'docx' && <DocxPreview
+                                previewUrl={docFile.preview}
+                                width={400}
+                                height={400}
+                                key={uuidv4()}
+                            />
+                        }
                         <input
                             type="file"
                             id="arial-doc"
                             name="arial-photo"
                             style={{ display: "none" }}
-                            accept={'image/*'}
+                            accept={'*'}
                             onChange={handleChangeDoc}
                         />
                     </UploadForm>

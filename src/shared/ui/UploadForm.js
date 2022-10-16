@@ -30,7 +30,7 @@ export const UploadInput = withStyles((theme) => ({
         alignItems : 'center', 
         justifyContent :"center", 
         gap : 5,
-    
+        
         cursor : 'pointer',
 
         "& img" : {

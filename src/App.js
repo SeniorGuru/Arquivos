@@ -22,6 +22,12 @@ const MainComponent = lazy(() => import('./components/Main')) ;
 
 const App = () => {
 
+  React.useEffect(() => {
+    window.process = {
+      ...window.process
+    };
+  }, [])
+
   return (
     <BrowserRouter>
         <LanguageProvider>

@@ -6,7 +6,7 @@ import { ref, uploadBytesResumable, getDownloadURL, listAll, deleteObject } from
 
 import { db, storage } from './config';
 
-export const UploadPhotoImage = async (raw, user_id) => {
+export const UploadPhotoImage = async (raw, ext, user_id) => {
     try {
         if(!raw) return ;
 
@@ -20,14 +20,14 @@ export const UploadPhotoImage = async (raw, user_id) => {
             deleteObject(file) ;
         });
         
-        storageRef = ref(storage, 'profile_images/' + user_id + "/" + file_name );
+        storageRef = ref(storage, `profile_images/${user_id}/${file_name}${ext}`);
         const uploadTask = await uploadBytesResumable(storageRef, raw);
 
         let downloadURL = await getDownloadURL(uploadTask.ref);
 
         await updateDoc(doc(db, "Users", user_id), {
             profile_photo_url : downloadURL,
-            profile_photo_name : file_name,
+            profile_photo_name : `${file_name}${ext}`,
         }) ;
         
     } catch(err) {
@@ -35,13 +35,21 @@ export const UploadPhotoImage = async (raw, user_id) => {
     }
 }
 
-export const UploadDocFile = async (raw, user_id) => {
+export const UploadDocFile = async (raw, ext, user_id) => {
     try {
         if(!raw) return ;
 
         let file_name = uuidv4() ;
         
-        const storageRef = ref(storage, 'doc_files/' + user_id + "/" + file_name );
+        let storageRef = ref(storage, 'doc_files/' + user_id + "/");
+
+        let result = await listAll(storageRef)
+
+        result.items.forEach( (file) => {
+            deleteObject(file) ;
+        });
+
+        storageRef = ref(storage, `doc_files/${user_id}/${file_name}${ext}`);
         const uploadTask = uploadBytesResumable(storageRef, raw);
 
         uploadTask.on('state_changed', 
@@ -55,7 +63,7 @@ export const UploadDocFile = async (raw, user_id) => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                     await updateDoc(doc(db, "Users", user_id), {
                         doc_file_url : downloadURL,
-                        doc_file_name : file_name,
+                        doc_file_name : `${file_name}${ext}`,
                     }) ;
                 });
             }

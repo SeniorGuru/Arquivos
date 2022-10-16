@@ -7,6 +7,8 @@ import { db, auth } from '../../firebase/config';
 
 import md5 from 'md5';
 
+import path from 'path' ;
+
 export const GetEmployees = () => async dispatch => {
     try {
         let employees = await getDocs(
@@ -109,6 +111,7 @@ export const GetCollaborators = () => async dispatch => {
 
 export const AddCollaborator = (
     photo,
+    photo_name,
     position,
     cav,
     name,
@@ -116,7 +119,8 @@ export const AddCollaborator = (
     house_hold,
     inform_email,
     password,
-    doc_file
+    doc_file,
+    doc_file_name,
 ) => async dispatch => {
     try {
         let userDocs = await getDocs(query(collection(db, "Users"), where('email', '==', inform_email)));
@@ -137,8 +141,8 @@ export const AddCollaborator = (
                 enabled_role : ['admin', 'backoffice', 'teamleader'].includes(position) ? true : false
             });
 
-            await UploadDocFile(doc_file, userCredential.user.uid) ;
-            await UploadPhotoImage(photo, userCredential.user.uid) ;
+            await UploadDocFile(doc_file , path.extname(doc_file_name) , userCredential.user.uid) ;
+            await UploadPhotoImage(photo, path.extname(photo_name) ,userCredential.user.uid) ;
 
             return userCredential.user.uid ;
         }
