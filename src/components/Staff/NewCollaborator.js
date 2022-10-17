@@ -105,6 +105,20 @@ const NewCollaborator = (props) => {
     
             preview = await getDownloadURL(uploadTask.ref) ;
         } else if(getExtension(e.target.files[0].name) === 'csv') {
+            reader.onload = (e) => {
+                let data = e.target.result;
+    
+                const tempList = [] ;
+    
+                data = data.split("\r\n"); 
+    
+                for (let row of data) { 
+                    tempList.push(row.split(',')) ;
+                }
+    
+                setCsvData([...tempList]) ;
+                console.log(tempList) ;
+            };
             reader.readAsText(e.target.files[0]);
         } else preview = URL.createObjectURL(e.target.files[0]) ;
         
@@ -140,22 +154,6 @@ const NewCollaborator = (props) => {
             timer : 5000
         })
     }
-
-    React.useEffect(() => {
-        reader.onload = (e) => {
-            let data = e.target.result;
-
-            const tempList = [] ;
-
-            data = data.split("\r\n"); 
-
-            for (let row of data) { 
-                tempList.push(row.split(',')) ;
-            }
-
-            setCsvData([...tempList]) ;
-        };
-    }, []) ;
 
     return (
         <RootDiv>
